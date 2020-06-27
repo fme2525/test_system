@@ -18,17 +18,21 @@ class Tester
     end
   end
 
+  private
+
   def run_test(in_file, out_file)
     expect = File.read(out_file).strip
     in_data = File.read(in_file).split(/\r?\n|\r(?!\n)/)
     actual = @task.run(in_data)
     result = actual == expect
-    unless result
-      puts "actual: #{actual.inspect}, expect: #{expect.inspect}"
-    end
+    puts colorize("actual: #{actual.inspect}, expect: #{expect.inspect}") unless result
     result
   rescue Exception => e
     puts e.inspect
     false
+  end
+
+  def colorize(text)
+    "\e[31m#{text}\e[0m"
   end
 end
